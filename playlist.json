@@ -1,0 +1,11 @@
+{
+  "name": "Mijn Spotify playlist",
+  "spotifyPlaylistId": "",
+  "tracks": [
+    {
+      "title": "Voorbeeldnummer",
+      "artists": ["Voorbeeld artiest"],
+      "url": ""
+    }
+  ]
+}
