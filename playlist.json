@@ -1,11 +1,6 @@
 {
-  "name": "Mijn Spotify playlist",
-  "spotifyPlaylistId": "",
-  "tracks": [
-    {
-      "title": "Voorbeeldnummer",
-      "artists": ["Voorbeeld artiest"],
-      "url": ""
-    }
-  ]
+  "name": "Standaard playlist",
+  "spotifyPlaylistId": "3vqQjDViyqTRi4PEOsDFi6",
+  "spotifyUrl": "https://open.spotify.com/playlist/3vqQjDViyqTRi4PEOsDFi6",
+  "tracks": []
 }
