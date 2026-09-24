@@ -149,14 +149,33 @@ async function loadPlaylists() {
 }
 
 async function loadSpotifyPlaylist(id) {
-  const data = await spotifyFetch("playlists/" + encodeURIComponent(id) + "?fields=name,id,external_urls,tracks.items(track(name,artists(name),external_urls)),tracks.next");
-  const tracks = (data.tracks?.items || [])
-    .map(item => item.track)
-    .filter(Boolean);
+  console.log("[SpotifyList] Playlist geselecteerd:", id);
 
-  renderTracks(data.name, tracks);
+  const playlist = await spotifyFetch(
+    "playlists/" + encodeURIComponent(id) + "?fields=name,id,external_urls"
+  );
+
+  const tracks = [];
+  let url = "playlists/" + encodeURIComponent(id) + "/items?limit=50";
+
+  while (url) {
+    const data = await spotifyFetch(url);
+
+    for (const item of data.items || []) {
+      const track = item.item;
+      if (track && track.type === "track") {
+        tracks.push(track);
+      }
+    }
+
+    url = data.next
+      ? new URL(data.next).pathname.replace("/v1/", "") + new URL(data.next).search
+      : null;
+  }
+
+  console.log("[SpotifyList] Tracks geladen:", tracks.length);
+  renderTracks(playlist.name, tracks);
 }
-
 function renderTracks(name, tracks) {
   $("playlist-title").textContent = name || "Spotify playlist";
   $("playlist-meta").textContent = tracks.length + (tracks.length === 1 ? " nummer" : " nummers");
