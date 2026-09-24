@@ -1,4 +1,4 @@
-console.log("[SpotifyList] app.js v3 geladen");
+console.log("[SpotifyList] app.js v4 geladen");
 
 const CLIENT_ID = "e4ec161f29cd4108ae4726d5faf27ac2";
 const REDIRECT_URI = window.location.origin + window.location.pathname;
@@ -187,6 +187,7 @@ function renderTracks(name, tracks) {
     return `
       <article class="track">
         <div class="track-number">${String(index + 1).padStart(2, "0")}</div>
+        ${track.album?.images?.length ? `<img class="track-art" src="${escapeAttribute(track.album.images[track.album.images.length - 1].url)}" alt="" loading="lazy">` : `<div class="track-art" aria-hidden="true"></div>`}
         <div>
           <p class="track-title">${escapeHtml(track.name || "")}</p>
           <p class="track-artist">${escapeHtml(artists)}</p>
