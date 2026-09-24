@@ -156,3 +156,12 @@ h1 {
     min-width: 0;
   }
 }
+
+
+.version {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+  opacity: .7;
+}
