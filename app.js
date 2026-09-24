@@ -1,4 +1,4 @@
-console.log("[SpotifyList] app.js v2 geladen");
+console.log("[SpotifyList] app.js v3 geladen");
 
 const CLIENT_ID = "e4ec161f29cd4108ae4726d5faf27ac2";
 const REDIRECT_URI = window.location.origin + window.location.pathname;
