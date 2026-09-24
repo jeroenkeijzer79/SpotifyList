@@ -1,4 +1,4 @@
-console.log("[SpotifyList] app.js v7 geladen");
+console.log("[SpotifyList] app.js v8 geladen");
 
 const CLIENT_ID = "e4ec161f29cd4108ae4726d5faf27ac2";
 const REDIRECT_URI = window.location.origin + window.location.pathname;
@@ -183,6 +183,7 @@ async function loadSpotifyPlaylist(id) {
   console.log("[SpotifyList] Tracks geladen:", tracks.length);
   renderTracks(playlist.name, tracks);
 }
+
 function renderTracks(name, tracks) {
   $("playlist-title").textContent = name || "Spotify playlist";
   $("playlist-meta").textContent = tracks.length + (tracks.length === 1 ? " nummer" : " nummers");
@@ -192,17 +193,31 @@ function renderTracks(name, tracks) {
     const url = track.external_urls?.spotify || "";
 
     return `
-      <article class="track">
+      <article class="track" role="link" tabindex="0" data-url="${escapeAttribute(url)}">
         <div class="track-number">${String(index + 1).padStart(2, "0")}</div>
         ${track.album?.images?.length ? `<img class="track-art" src="${escapeAttribute(track.album.images[track.album.images.length - 1].url)}" alt="" loading="lazy">` : `<div class="track-art" aria-hidden="true"></div>`}
         <div>
           <p class="track-title">${escapeHtml(track.name || "")}</p>
           <p class="track-artist">${escapeHtml(artists)}</p>
         </div>
-        ${url ? `<a class="track-link" href="${escapeAttribute(url)}" target="_blank" rel="noopener">Spotify ↗</a>` : ""}
       </article>
     `;
   }).join("");
+
+  document.querySelectorAll("#track-list .track").forEach(track => {
+    const openSpotify = () => {
+      const url = track.dataset.url;
+      if (url) window.open(url, "_blank", "noopener");
+    };
+
+    track.addEventListener("click", openSpotify);
+    track.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openSpotify();
+      }
+    });
+  });
 }
 
 function updateDefaultButton() {
