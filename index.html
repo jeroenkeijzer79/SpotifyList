@@ -10,9 +10,21 @@
   <main class="page">
     <header class="hero">
       <p class="eyebrow">SpotifyList</p>
-      <h1 id="playlist-title">Playlist laden...</h1>
-      <p id="playlist-meta" class="muted"></p>
+      <h1 id="playlist-title">SpotifyList</h1>
+      <p id="playlist-meta" class="muted">Verbind met Spotify om je playlists te laden.</p>
+
+      <div class="spotify-controls">
+        <button id="spotify-login" class="spotify-button" type="button">Verbinden met Spotify</button>
+        <button id="spotify-logout" class="secondary-button" type="button" hidden>Uitloggen</button>
+        <label id="playlist-picker-wrap" class="playlist-picker" hidden>
+          <span>Kies een playlist</span>
+          <select id="playlist-picker">
+            <option value="">Playlist laden...</option>
+          </select>
+        </label>
+      </div>
     </header>
+
     <section id="track-list" class="track-list" aria-live="polite"></section>
     <p id="error" class="error" hidden></p>
   </main>
