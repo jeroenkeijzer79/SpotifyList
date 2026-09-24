@@ -1,4 +1,4 @@
-console.log("[SpotifyList] app.js v4 geladen");
+console.log("[SpotifyList] app.js v7 geladen");
 
 const CLIENT_ID = "e4ec161f29cd4108ae4726d5faf27ac2";
 const REDIRECT_URI = window.location.origin + window.location.pathname;
@@ -146,6 +146,13 @@ async function loadPlaylists() {
   }
 
   wrap.hidden = false;
+
+  const defaultId = localStorage.getItem("spotify_default_playlist");
+  if (defaultId && [...picker.options].some(option => option.value === defaultId)) {
+    picker.value = defaultId;
+    await loadSpotifyPlaylist(defaultId);
+    updateDefaultButton();
+  }
 }
 
 async function loadSpotifyPlaylist(id) {
@@ -196,6 +203,26 @@ function renderTracks(name, tracks) {
       </article>
     `;
   }).join("");
+}
+
+function updateDefaultButton() {
+  if (!defaultPlaylistButton) return;
+  const id = playlistPicker.value;
+  if (!id) {
+    defaultPlaylistButton.hidden = true;
+    return;
+  }
+  defaultPlaylistButton.hidden = false;
+  const isDefault = localStorage.getItem("spotify_default_playlist") === id;
+  defaultPlaylistButton.textContent = isDefault ? "✓ Standaard ingesteld" : "★ Als standaard instellen";
+  defaultPlaylistButton.classList.toggle("active", isDefault);
+}
+
+function setDefaultPlaylist() {
+  const id = playlistPicker.value;
+  if (!id) return;
+  localStorage.setItem("spotify_default_playlist", id);
+  updateDefaultButton();
 }
 
 function clearSpotifySession() {
@@ -252,6 +279,7 @@ async function initialize() {
 const loginButton = $("spotify-login");
 const logoutButton = $("spotify-logout");
 const playlistPicker = $("playlist-picker");
+const defaultPlaylistButton = $("set-default-playlist");
 
 if (!loginButton || !logoutButton || !playlistPicker) {
   console.error("[SpotifyList] UI-element ontbreekt. Controleer index.html.");
@@ -264,8 +292,10 @@ if (!loginButton || !logoutButton || !playlistPicker) {
   });
   logoutButton.addEventListener("click", logout);
   playlistPicker.addEventListener("change", event => {
+    updateDefaultButton();
     if (event.target.value) loadSpotifyPlaylist(event.target.value).catch(showError);
   });
+  defaultPlaylistButton?.addEventListener("click", setDefaultPlaylist);
 }
 function showError(err) {
   const error = $("error");
