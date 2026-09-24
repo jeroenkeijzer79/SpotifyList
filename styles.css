@@ -37,13 +37,21 @@ h1 {
 
 .track {
   display: grid;
-  grid-template-columns: 48px 1fr auto;
+  grid-template-columns: 48px 48px 1fr auto;
   gap: 16px;
   align-items: center;
   padding: 14px 16px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
+}
+
+.track-art {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
 }
 
 .track-number {
@@ -84,11 +92,11 @@ h1 {
   }
 
   .track {
-    grid-template-columns: 36px 1fr;
+    grid-template-columns: 36px 48px 1fr;
     gap: 12px;
   }
 
-  .track-link { grid-column: 2; }
+  .track-link { grid-column: 3; }
 }
 
 .spotify-controls {
