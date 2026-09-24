@@ -1,3 +1,5 @@
+console.log("[SpotifyList] app.js v2 geladen");
+
 const CLIENT_ID = "e4ec161f29cd4108ae4726d5faf27ac2";
 const REDIRECT_URI = window.location.origin + window.location.pathname;
 const SCOPES = "playlist-read-private playlist-read-collaborative";
@@ -227,12 +229,24 @@ async function initialize() {
   await loadPlaylists();
 }
 
-$("spotify-login").addEventListener("click", () => login().catch(showError));
-$("spotify-logout").addEventListener("click", logout);
-$("playlist-picker").addEventListener("change", event => {
-  if (event.target.value) loadSpotifyPlaylist(event.target.value).catch(showError);
-});
+const loginButton = $("spotify-login");
+const logoutButton = $("spotify-logout");
+const playlistPicker = $("playlist-picker");
 
+if (!loginButton || !logoutButton || !playlistPicker) {
+  console.error("[SpotifyList] UI-element ontbreekt. Controleer index.html.");
+  showError(new Error("SpotifyList kan de interface niet initialiseren. Vernieuw de pagina met Ctrl+F5."));
+} else {
+  console.log("[SpotifyList] UI geïnitialiseerd");
+  loginButton.addEventListener("click", () => {
+    console.log("[SpotifyList] Verbinden met Spotify geklikt");
+    login().catch(showError);
+  });
+  logoutButton.addEventListener("click", logout);
+  playlistPicker.addEventListener("change", event => {
+    if (event.target.value) loadSpotifyPlaylist(event.target.value).catch(showError);
+  });
+}
 function showError(err) {
   const error = $("error");
   error.hidden = false;
